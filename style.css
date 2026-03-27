@@ -266,10 +266,11 @@
 				inset-block-start: 1lh;
 				align-self: start;
 				text-align: end;
-				z-index: 1;
 
-				p {
+				> * {
+					--measure: 40ch;
 					margin-inline-start: auto;
+					z-index: 1;
 				}
 			}
 
