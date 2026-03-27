@@ -76,7 +76,7 @@
 		container-type: inline-size;
 
 		h1 {
-			font-size: min(15cqi, 4.5rem);
+			font-size: min(15cqi, 4rem);
 			text-transform: uppercase;
 			letter-spacing: -0.075em;
 		}
