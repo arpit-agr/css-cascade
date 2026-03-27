@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>CSS Cascade</title>
+		<link rel="stylesheet" href="./style.css" />
+		<script type="module">
+			document.documentElement.classList.remove("no-js");
+			document.documentElement.classList.add("js");
+		</script>
+		<meta
+			name="description"
+			content="A visual explainer of the CSS Cascade, the algorithm that determines the 'winning value' from a list of competing declarations."
+		/>
+		<meta property="og:title" content="CSS Cascade" />
+		<meta
+			property="og:description"
+			content="A visual explainer of the CSS Cascade, the algorithm that determines the 'winning value' from a list of competing declarations."
+		/>
+		<meta property="og:image" content="TKTK" />
+	</head>
+	<body class="region wrapper">
+		<div class="flow">
+			<header class="flow">
+				<h1>CSS Cascade</h1>
+				<p>
+					This is the algorithm that determines the "winning value" from a list
+					of competing declarations.
+				</p>
+			</header>
+			<main>
+				<div class="diagram flow">
+					<details style="--rotate: 1deg" name="cascade">
+						<summary data-step="1">
+							<svg width="21" height="15" aria-hidden="true">
+								<use href="#caret" />
+							</svg>
+							<span class="visually-hidden">Step 1:</span>
+							<h2>Origin and importance</h2>
+						</summary>
+						<div>
+							<ol>
+								<li>transition</li>
+								<li>
+									<span class="visually-hidden">important browser</span>
+									<span aria-hidden="true">!browser</span>
+								</li>
+								<li>
+									<span class="visually-hidden">important user</span>
+									<span aria-hidden="true">!user</span>
+								</li>
+								<li>
+									<span class="visually-hidden">important author</span>
+									<span aria-hidden="true">!author</span>
+								</li>
+								<li>animation</li>
+								<li>author</li>
+								<li>user</li>
+								<li>browser</li>
+							</ol>
+						</div>
+					</details>
+					<div class="connector">
+						<p>same origin? <span class="visually-hidden">then go to</span></p>
+						<svg width="800" height="800" aria-hidden="true">
+							<use href="#arrow" />
+						</svg>
+					</div>
+					<details style="--rotate: -1deg" name="cascade">
+						<summary data-step="2">
+							<svg width="21" height="15" aria-hidden="true">
+								<use href="#caret" />
+							</svg>
+							<span class="visually-hidden">Step 2:</span>
+							<h2>Context</h2>
+						</summary>
+						<div class="flow" style="--flow-space: 1em">
+							<p>
+								Relevant when you're dealing with the shadow DOM and
+								<a
+									href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::part"
+									><code>::part()</code>
+								</a>
+							</p>
+							<ol>
+								<li>
+									<span class="visually-hidden">important inner (shadow)</span>
+									<span aria-hidden="true">!inner (shadow)</span>
+								</li>
+								<li>
+									<span class="visually-hidden">
+										important outer (<code>::part</code>)
+									</span>
+									<span aria-hidden="true">!outer (<code>::part</code>)</span>
+								</li>
+								<li>outer (<code>::part</code>)</li>
+								<li>inner (shadow)</li>
+							</ol>
+						</div>
+					</details>
+					<div class="connector">
+						<p>same context? <span class="visually-hidden">then go to</span></p>
+						<svg width="800" height="800" aria-hidden="true">
+							<use href="#arrow" />
+						</svg>
+					</div>
+					<details style="--rotate: 0.5deg" name="cascade">
+						<summary data-step="3">
+							<svg width="21" height="15" aria-hidden="true">
+								<use href="#caret" />
+							</svg>
+							<span class="visually-hidden">Step 3:</span>
+							<h2>The style attribute</h2>
+						</summary>
+						<div>
+							<p>
+								The declarations in a style attribute (inline styles) take
+								precedence over declarations mapped via a style rule.
+							</p>
+						</div>
+					</details>
+					<div class="connector">
+						<p>
+							no inline styles?
+							<span class="visually-hidden">then go to</span>
+						</p>
+						<svg width="800" height="800" aria-hidden="true">
+							<use href="#arrow" />
+						</svg>
+					</div>
+					<details style="--rotate: -0.5deg" name="cascade">
+						<summary data-step="4">
+							<svg width="21" height="15" aria-hidden="true">
+								<use href="#caret" />
+							</svg>
+							<span class="visually-hidden">Step 4:</span>
+							<h2>Layers</h2>
+						</summary>
+						<div>
+							<ol>
+								<li>
+									<span class="visually-hidden">important layer A</span>
+									<span aria-hidden="true">!layer A</span>
+								</li>
+								<li>
+									<span class="visually-hidden">important layer B</span>
+									<span aria-hidden="true">!layer B</span>
+								</li>
+								<li>
+									<span class="visually-hidden">important layer N</span>
+									<span aria-hidden="true">!layer N</span>
+								</li>
+								<li>
+									<span class="visually-hidden">important unlayered</span>
+									<span aria-hidden="true">!unlayered</span>
+								</li>
+								<li>unlayered</li>
+								<li>layer N</li>
+								<li>layer B</li>
+								<li>layer A</li>
+							</ol>
+						</div>
+					</details>
+					<div class="connector">
+						<p>same layer? <span class="visually-hidden">then go to</span></p>
+						<svg width="800" height="800" aria-hidden="true">
+							<use href="#arrow" />
+						</svg>
+					</div>
+					<details style="--rotate: 1deg" name="cascade">
+						<summary data-step="5">
+							<svg width="21" height="15" aria-hidden="true">
+								<use href="#caret" />
+							</svg>
+							<span class="visually-hidden">Step 5:</span>
+							<h2>Specificity</h2>
+						</summary>
+						<div>
+							<ol>
+								<li>ID</li>
+								<li>class, attribute, psuedo-class</li>
+								<li>element, psuedo-element</li>
+								<li>
+									<span class="visually-hidden">
+										universal selector, next sibling combinator, child
+										combinator, subsequent-sibling combinator
+									</span>
+									<span aria-hidden="true">
+										<code>*</code>
+										<code>+</code>
+										<code>&gt;</code>
+										<code>~</code>
+									</span>
+								</li>
+							</ol>
+						</div>
+					</details>
+					<div class="connector">
+						<p>
+							same specificity? <span class="visually-hidden">then go to</span>
+						</p>
+						<svg width="800" height="800" aria-hidden="true">
+							<use href="#arrow" />
+						</svg>
+					</div>
+					<details style="--rotate: -0.5deg" name="cascade">
+						<summary data-step="6">
+							<svg width="21" height="15" aria-hidden="true">
+								<use href="#caret" />
+							</svg>
+							<span class="visually-hidden">Step 6:</span>
+							<h2>Scope proximity</h2>
+						</summary>
+						<div>
+							<p>
+								The style that has the smallest number of hops up the DOM tree
+								hierarchy to the scope root wins.
+							</p>
+						</div>
+					</details>
+					<div class="connector">
+						<p>
+							same proximity? or no scope?
+							<span class="visually-hidden">then go to</span>
+						</p>
+						<svg width="800" height="800" aria-hidden="true">
+							<use href="#arrow" />
+						</svg>
+					</div>
+					<details style="--rotate: 0deg" name="cascade">
+						<summary data-step="7">
+							<svg width="21" height="15" aria-hidden="true">
+								<use href="#caret" />
+							</svg>
+							<span class="visually-hidden">Step 7:</span>
+							<h2>Order of appearance</h2>
+						</summary>
+						<div>
+							<p>Last declaration in the document order wins.</p>
+						</div>
+					</details>
+				</div>
+			</main>
+			<footer class="credits flow">
+				<p>Credits:</p>
+				<ul>
+					<li>
+						Diagram from
+						<a href="https://www.youtube.com/watch?v=zEPXyqj7pEA"
+							>Bramus's CSS Day 2022 talk</a
+						>
+					</li>
+					<li>
+						Order of precedence from
+						<a href="https://css-tricks.com/css-cascade-layers/"
+							>Miriam Suzanne's cascade layers guide</a
+						>
+					</li>
+					<li>
+						Hand-drawn style from
+						<a href="https://chr15m.github.io/DoodleCSS/">Doodle CSS</a> by
+						<a href="https://mccormick.cx/">Chris McCormick</a>
+					</li>
+					<li>Built by <a href="https://arpit.codes">Arpit Agrawal</a></li>
+				</ul>
+			</footer>
+		</div>
+		<svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+			<symbol id="arrow" viewBox="0 0 359.171 359.171">
+				<path
+					d="M351.689 201.729c-.612-46.512-6.732-95.472-18.972-140.76-3.061-9.792-17.748-6.12-15.301 4.284 9.792 40.392 15.912 81.396 17.748 123.013 1.837 41.615 2.448 97.308-27.54 129.743-15.3 16.524-42.84 15.912-63.647 17.137-30.601 1.836-61.812 1.224-92.412-.612-30.6-1.224-61.812-4.284-92.412-7.956-16.524-1.836-43.452-11.016-58.14-3.06-1.224.611-1.224 2.447-.612 3.06 11.016 14.076 42.228 13.464 58.752 15.912 36.72 4.896 72.828 7.344 109.548 9.18 44.675 1.836 114.443 11.017 149.939-22.644 32.437-29.377 33.049-86.905 33.049-127.297"
+				/>
+				<path
+					d="M338.225 8.949c-4.284-6.12-11.628-4.896-14.688 1.836-8.567 20.808-22.031 39.78-30.6 60.588-2.448 6.12 6.732 9.18 9.792 4.284 9.792-15.912 18.972-31.824 28.764-47.736l7.345 14.688c3.06 7.956 3.672 15.912 7.344 23.256 2.447 5.508 9.792 3.06 11.628-1.224 6.119-17.136-9.793-41.616-19.585-55.692"
+				/>
+			</symbol>
+			<symbol id="caret" viewBox="0 0 21 15">
+				<path
+					stroke="#000"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-miterlimit="10"
+					stroke-width="3.289"
+					d="M1.645 1.644a28 28 0 0 0 3.486 2.81q1.762 1.188 2.892 3.329 1.13 2.139 2.318 3.597t1.463 1.23q.277-.228 2.086-3.389 1.812-3.16 2.787-4.251.976-1.092 1.048-1.576.071-.483.787-.827t-.233-.412-4.274.554q-3.324.623-8.001.003t-3.488.536Q3.704 4.405 5.354 5.53q1.649 1.125 2.57 3.112.921 1.986 1.451 2.504.531.518.785.243.255-.274.697-1.824.443-1.55.717-1.994t1.626-1.47q1.35-1.025 2.258-1.319.906-.294-1.968-.148-2.876.146-3.722.45t-.27.931.769 2.216.678 2.257q.485.67.644-.164t-.74-5.605"
+				/>
+			</symbol>
+		</svg>
+	</body>
+</html>
