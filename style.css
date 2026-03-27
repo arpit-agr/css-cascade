@@ -130,7 +130,7 @@
 				inset-block-start: 0;
 				inset-inline-end: 0;
 				translate: 50% -50%;
-				font-size: 5cqmax;
+				font-size: 7cqmax;
 				-webkit-text-stroke: 0.33em var(--color-surface-default);
 				paint-order: stroke;
 			}
