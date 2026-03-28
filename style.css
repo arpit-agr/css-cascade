@@ -1,26 +1,41 @@
-@layer reset, base, components, utilities;
+@layer reset, base, composition, blocks, utilities;
 
 @layer base {
 	:root {
+		/* layout */
 		--wrapper-max-width: 45ch;
-		--wrapper-padding-inline: 1lh;
-		--region-space: 1lh;
-		--flow-space: 1lh;
+
+		/* color */
 		--color-light: #fdf7f1;
 		--color-dark: #3c3c3c;
+		--color-surface-default: var(--color-light);
+		--color-text-normal: var(--color-dark);
+		--color-fill: oklch(from var(--color-text-normal) l c h / 0.9);
+
+		/* font */
 		--font-body: "Short Stack", cursive;
+		--font-mono:
+			ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
+			"DejaVu Sans Mono", monospace;
 		--leading-normal: 1.6;
 		--leading-tight: 1.3;
 		--font-weight-bold: 400;
+
+		/* animation */
 		--transition-slow: 200ms;
 		--ease-3: cubic-bezier(0.25, 0, 0.3, 1);
 		--animation-fade-in: fade-in 0.5s var(--ease-3);
-		--color-surface-default: var(--color-light);
-		--color-text-normal: var(--color-dark);
-		--color-svg: oklch(from var(--color-text-normal) l c h / 0.9);
+
+		/* border from DoodleCSS */
 		--border-thickness: 3px;
 		--border-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120.092%22%20height%3D%2261.348%22%20viewBox%3D%220%200%20112.586%2057.514%22%3E%3Cpath%20d%3D%22M15.474%20996.801c5.573-.108%2011.154-.054%2016.714.091%205.006.097%2012.756.875%2019.148.622%204.28.486%208.603-.311%2012.911.288%206.164-.072%2012.31-1.003%2018.497-.664%205.81.334%2010.052.468%2017.518.331%207.402-.516%2010.784.102%2010.263%207.293-.302%206.127-.167%2011.363-.175%2016.043.035%208.648%201.362%2024.998-.566%2027.614-2.952%203.79-9.954%201.076-14.306%201.16-3.987-.144-9.602%201.103-13.523.042-4.88-.673-8.213.66-13.114.305-4.964%200-9.787-.844-14.57.312-5.884.777-13.383.644-19.2-.51-5.841-.903-9.964-.064-15.84-.128-4.778-.049-15.036%201.758-16.604-.035-1.748-1.85-.385-11.781-.438-15.645-.374-9.227-.536-15.603.13-24.823.085-1.613-1.135-8.421.014-10.21%202.414-3.571%209.257-1.587%2013.14-2.085z%22%20style%3D%22fill%3Anone%3Bstroke%3A%233c3c3c%3Bstroke-width%3A3%3Bstroke-linecap%3Around%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A10%3Bstroke-dasharray%3Anone%3Bstroke-opacity%3A1%22%20transform%3D%22translate(0%20-994.848)%22%2F%3E%3C%2Fsvg%3E%0A")
 			5 5 5 5 stretch stretch;
+
+		/* focus */
+		--focus-ring-width: var(--border-thickness);
+		--focus-ring-offset: calc(var(--border-thickness) - 2px);
+
+		/* shadow from open props */
 		--shadow-color: 220 3% 15%;
 		--shadow-strength: 1%;
 		--shadow-strength-3: calc(var(--shadow-strength) + 2%);
@@ -45,23 +60,34 @@
 
 	a {
 		color: currentColor;
-		text-decoration-thickness: calc(var(--border-thickness) - 1px);
+		text-decoration-thickness: calc(var(--border-thickness) - 2px);
+		text-decoration-color: var(--color-fill);
 		text-underline-offset: calc(var(--border-thickness) - 1px);
+		transition: text-decoration-thickness 50ms;
 
 		&:hover {
-			text-decoration-thickness: var(--border-thickness);
+			text-decoration-thickness: calc(var(--border-thickness) - 1px);
 		}
 	}
 
-	code {
-		padding-inline: 0.125em;
+	svg {
+		display: block;
+		max-inline-size: 100%;
+
+		flex-shrink: 0;
+		inline-size: var(--icon-size, 1em);
+		block-size: var(--icon-size, 1em);
+		vertical-align: middle;
 	}
 }
 
-@layer components {
-	header {
+@layer blocks {
+	header,
+	.diagram > * {
 		--flow-space: 0.75lh;
+	}
 
+	header {
 		/* For firefox */
 		@supports not (text-box: trim-both cap alphabetic) {
 			--flow-space: 0em;
@@ -69,18 +95,14 @@
 		container-type: inline-size;
 
 		h1 {
-			font-size: min(15cqi, 4rem);
+			font-size: min(15cqi, 3.75rem);
 			text-transform: uppercase;
 			letter-spacing: -0.075em;
 		}
 
 		p {
-			text-wrap: balance;
+			--measure: 35ch;
 		}
-	}
-
-	.diagram > * {
-		--flow-space: 0.75lh;
 	}
 
 	@supports (inline-size: calc(sibling-index() * 1em)) {
@@ -95,7 +117,9 @@
 	}
 
 	details {
-		position: relative;
+		--details-padding: min(6cqi, 0.5lh);
+
+		container-type: inline-size;
 		background-color: var(--color-surface-default);
 		box-shadow: var(--shadow-4);
 		rotate: var(--rotate);
@@ -111,14 +135,15 @@
 		}
 
 		> * {
-			padding: 0.75lh;
+			padding: var(--details-padding);
 		}
 
 		summary {
+			--focus-ring-offset: calc(-2 / 3 * var(--details-padding));
+
 			display: flex;
 			align-items: first baseline;
 			gap: 0.5ch;
-			line-height: var(--leading-tight);
 
 			&::marker {
 				content: "";
@@ -136,13 +161,14 @@
 			}
 
 			svg {
-				block-size: min(5cqi, 1ex);
+				--icon-size: min(5cqi, 1ex);
+
 				rotate: -90deg;
 				translate: 0 -0.125ex;
 				transition: rotate var(--transition-slow);
 
 				path {
-					stroke: var(--color-svg);
+					stroke: var(--color-fill);
 				}
 			}
 		}
@@ -156,13 +182,7 @@
 		}
 
 		&::details-content {
-			font-family:
-				ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
-				"DejaVu Sans Mono", monospace;
-		}
-
-		p {
-			text-wrap: balance;
+			font-family: var(--font-mono);
 		}
 
 		ol {
@@ -187,6 +207,7 @@
 		position: relative;
 
 		svg {
+			--icon-size: 1lh;
 			position: absolute;
 			inset-block-start: 0%;
 			inset-inline-start: calc(100% + 0.5ch);
@@ -197,8 +218,9 @@
 
 	footer {
 		--flow-space: 2lh;
-		font-size: 0.75em;
-		max-inline-size: fit-content;
+		padding-block-start: 1lh;
+		border-block-start: var(--border-thickness) solid;
+		font-size: 0.75rem;
 
 		> * {
 			--flow-space: 1em;
@@ -206,10 +228,6 @@
 
 		ul {
 			padding-inline-start: 1em;
-		}
-
-		li {
-			text-wrap: balance;
 		}
 	}
 
@@ -225,7 +243,7 @@
 		FIXME: not (font: -apple-system-body) to exclude safari because chain of three or more anchor-positioned elements doesn't work in Safari yet
 	*/
 	@supports (anchor-name: --card) and (not (font: -apple-system-body)) {
-		@media (width >= 64rem) and (height >= 48rem) and (orientation: landscape) {
+		@media (width >= 64rem) and (orientation: landscape) {
 			:root {
 				--wrapper-max-width: 2240px; /* iMac 24 */
 			}
@@ -234,7 +252,7 @@
 				place-content: center;
 			}
 
-			body > div {
+			.page-inner {
 				display: grid;
 				grid-template-columns: 1fr;
 				grid-template-rows: 1fr;
@@ -250,21 +268,13 @@
 				}
 			}
 
-			header,
-			footer {
-				position: sticky;
-			}
-
 			header {
-				inset-block-start: 1lh;
+				container-type: unset;
+				max-inline-size: fit-content;
+				justify-self: end;
 				align-self: start;
 				text-align: end;
-
-				> * {
-					--measure: 40ch;
-					margin-inline-start: auto;
-					z-index: 1;
-				}
+				z-index: 1;
 			}
 
 			main {
@@ -272,14 +282,17 @@
 			}
 
 			footer {
-				inset-block-end: 1lh;
+				padding-block-start: unset;
+				border-block-start: none;
+
+				max-inline-size: fit-content;
 				align-self: end;
 			}
 
 			.diagram {
-				--card-aspect-ratio: 0.62; /* at 1024px the card needs this ratio */
-				--card-vertical-offset: 3.875rlh;
-				--card-horizontal-offset: 1rlh;
+				--card-aspect-ratio: 0.66; /* at 1024px the card needs this ratio */
+				--card-vertical-offset: 4.5rem;
+				--card-horizontal-offset: 1rem;
 				--card-width: calc(
 					(100cqi / 7) - (var(--card-horizontal-offset) * 6 / 7)
 				);
@@ -304,13 +317,8 @@
 				inset-block-start: calc(anchor(top) + var(--card-vertical-offset));
 				inset-inline-start: calc(anchor(end) + var(--card-horizontal-offset));
 
-				container-type: inline-size;
 				inline-size: var(--card-width);
 				aspect-ratio: var(--card-aspect-ratio);
-
-				> * {
-					padding: 6cqi;
-				}
 
 				&::details-content {
 					position: relative;
@@ -348,6 +356,8 @@
 				container-type: inline-size;
 
 				svg {
+					--icon-size: calc(0.75 * var(--card-vertical-offset));
+
 					inset-inline-start: unset;
 					scale: unset;
 					translate: unset;
@@ -355,9 +365,8 @@
 					position: absolute;
 					inset-block-start: 0;
 					inset-inline-end: 0;
-					block-size: calc(0.75 * var(--card-vertical-offset));
-					inline-size: auto;
-					fill: var(--color-svg);
+
+					fill: var(--color-fill);
 					rotate: 90deg;
 					translate: 6cqi 2cqi;
 				}
@@ -369,20 +378,16 @@
 					font-size: 7cqi;
 					line-height: var(--leading-tight);
 					text-align: center;
-					text-wrap: balance;
-					/*translate: 0 0.125lh;*/
 					z-index: 1;
 				}
 			}
 
 			@supports (inline-size: calc(sibling-index() * 1em)) {
 				@media (prefers-reduced-motion: no-preference) {
-					/* ebay playbook style animation */
 					details {
 						opacity: unset;
 						inset-block-start: 0%;
 						inset-inline-start: 0%;
-						/*rotate: calc((3 - sibling-index()) * 1deg);*/
 						z-index: calc(100 - sibling-index());
 						animation: expand-cards 400ms var(--ease-3) forwards;
 					}
@@ -403,6 +408,7 @@
 		}
 	}
 
+	/* inspired from ebay playbook */
 	@keyframes expand-cards {
 		to {
 			inset-block-start: calc(anchor(top) + var(--card-vertical-offset));
@@ -434,7 +440,6 @@
 
 	html {
 		block-size: 100%;
-		/* color-scheme: light dark; */
 		-moz-text-size-adjust: none;
 		-webkit-text-size-adjust: none;
 		text-size-adjust: none;
@@ -447,7 +452,7 @@
 		min-height: 100%;
 		background: var(--color-surface-default, canvas);
 		color: var(--color-text-normal, canvasText);
-		font-size: var(--size-step-0, 1rem);
+		font-size: 1rem;
 		font-family: var(--font-body, system-ui, sans-serif);
 		line-height: var(--leading-normal, 1.5);
 		hanging-punctuation: first last;
@@ -458,26 +463,24 @@
 	/* Typography */
 	h1,
 	h2 {
-		font-family: var(--font-heading, inherit);
 		font-weight: var(--font-weight-bold, bold);
-		line-height: var(--leading-tight, 1.3);
+		line-height: var(--leading-tight, 1.1);
 		text-wrap: balance;
 		text-box: trim-both cap alphabetic;
 	}
 
 	h1 {
-		font-size: var(--size-step-5, 2.25rem);
+		font-size: 2.25rem;
 		line-height: var(--leading-none, 1.1);
 	}
 
 	h2 {
-		font-size: var(--size-step-4, 1.875rem);
+		font-size: 1.875rem;
 		line-height: var(--leading-tight, 1.3);
 	}
 
 	p,
-	li,
-	dd {
+	li {
 		max-inline-size: var(--measure, 70ch);
 		text-wrap: pretty;
 	}
@@ -502,15 +505,10 @@
 	}
 
 	/* Code */
-	code,
-	kbd,
-	samp {
+	code {
 		font-family: var(--font-mono, ui-monospace, monospace);
-		background: var(
-			--color-fill-normal,
-			color-mix(in srgb, currentColor 10%, transparent)
-		);
-		padding-inline: 0.25em;
+		background: color-mix(in srgb, currentColor 10%, transparent);
+		padding-inline: 0.125em;
 		hyphens: none;
 		tab-size: 2;
 		text-align: start;
@@ -519,43 +517,6 @@
 		word-wrap: normal;
 		box-decoration-break: clone;
 		-webkit-box-decoration-break: clone;
-	}
-
-	/* Media */
-	img,
-	svg,
-	video,
-	canvas,
-	audio,
-	iframe,
-	embed,
-	object {
-		display: block;
-	}
-
-	img,
-	svg,
-	video {
-		max-inline-size: 100%;
-		block-size: auto;
-	}
-
-	svg {
-		flex-shrink: 0;
-		inline-size: var(--icon-size, 1em);
-		block-size: var(--icon-size, 1em);
-		vertical-align: middle;
-	}
-
-	svg:not([class]) {
-		inline-size: auto;
-		block-size: 1lh;
-	}
-
-	svg[role="img"] {
-		inline-size: revert;
-		block-size: revert;
-		padding: var(--space-xs, 0.75rem);
 	}
 
 	/* Details & Summary */
@@ -571,23 +532,11 @@
 	}
 
 	details[open]::details-content {
-		/* margin-block-start: var(--space-xs, 0.75rem); */
 		block-size: auto;
 		opacity: 1;
 	}
 
 	/* Interaction (Focus, Selection & Target) */
-	:focus {
-		outline-width: var(--focus-ring-width, 2px);
-		outline-style: var(--focus-ring-style, auto);
-		outline-color: var(--focus-ring-color, currentColor);
-		outline-offset: var(--focus-ring-offset, 4px);
-	}
-
-	:focus {
-		outline: none;
-	}
-
 	:focus-visible {
 		outline-width: var(--focus-ring-width, 2px);
 		outline-style: var(--focus-ring-style, auto);
@@ -595,26 +544,7 @@
 		outline-offset: var(--focus-ring-offset, 4px);
 	}
 
-	@supports (-moz-appearance: none) {
-		:root {
-			--focus-ring-offset: 0.2ex;
-		}
-	}
-
-	::selection {
-		background: var(--color-selection-bg, Highlight);
-		color: var(--color-selection-fg, HighlightText);
-		text-shadow: none;
-	}
-
-	:target {
-		scroll-margin-block: 5ex;
-	}
-
-	/* ============================================
-   Accessibility / Utilities
-   ============================================ */
-
+	/* Accessibility / Utilities */
 	[hidden] {
 		display: none !important;
 	}
@@ -631,19 +561,21 @@
 	}
 }
 
+@layer composition {
+	.region {
+		padding-block: var(--region-space, 1lh);
+	}
+
+	.flow > * + * {
+		margin-block-start: var(--flow-space, 1lh);
+	}
+}
+
 @layer utilities {
 	.wrapper {
 		margin-inline: auto;
 		max-inline-size: var(--wrapper-max-width, 1360px);
-		padding-inline: var(--wrapper-padding-inline, 1rem);
-	}
-
-	.region {
-		padding-block: var(--region-space, 1rem);
-	}
-
-	.flow > * + * {
-		margin-block-start: var(--flow-space, 1em);
+		padding-inline: var(--wrapper-padding-inline, 1lh);
 	}
 
 	.visually-hidden {
@@ -656,5 +588,9 @@
 		position: absolute;
 		width: 1px;
 		white-space: nowrap;
+	}
+
+	.text-balance {
+		text-wrap: balance;
 	}
 }
