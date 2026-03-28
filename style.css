@@ -268,13 +268,17 @@
 				}
 			}
 
+			header,
+			footer {
+				z-index: 1;
+			}
+
 			header {
 				container-type: unset;
 				max-inline-size: fit-content;
 				justify-self: end;
 				align-self: start;
 				text-align: end;
-				z-index: 1;
 			}
 
 			main {
