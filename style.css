@@ -588,12 +588,11 @@
 		outline: none;
 	}
 
-		:focus-visible {
-			outline-width: var(--focus-ring-width, 2px);
-			outline-style: var(--focus-ring-style, auto);
-			outline-color: var(--focus-ring-color, currentColor);
-			outline-offset: var(--focus-ring-offset, 4px);
-		}
+	:focus-visible {
+		outline-width: var(--focus-ring-width, 2px);
+		outline-style: var(--focus-ring-style, auto);
+		outline-color: var(--focus-ring-color, currentColor);
+		outline-offset: var(--focus-ring-offset, 4px);
 	}
 
 	@supports (-moz-appearance: none) {
