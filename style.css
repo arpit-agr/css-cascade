@@ -154,9 +154,9 @@
 				position: absolute;
 				inset-block-start: 0;
 				inset-inline-end: 0;
-				translate: 50% -50%;
+				translate: 0% -50%;
 				font-size: min(7cqmax, 3rem);
-				-webkit-text-stroke: 0.33em var(--color-surface-default);
+				-webkit-text-stroke: 0.5em var(--color-surface-default);
 				paint-order: stroke;
 			}
 
