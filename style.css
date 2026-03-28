@@ -331,7 +331,8 @@
 				}
 
 				li + li {
-					border-block-start: 1px dashed;
+					border-block-start: 1px dashed
+						oklch(from var(--color-surface-default) calc(l - 0.125) c h);
 				}
 			}
 
