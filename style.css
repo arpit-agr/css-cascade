@@ -245,7 +245,7 @@
 	@supports (anchor-name: --card) and (not (font: -apple-system-body)) {
 		@media (width >= 64rem) and (orientation: landscape) {
 			:root {
-				--wrapper-max-width: 2240px; /* iMac 24 */
+				--wrapper-max-width: 1536px; /* 96rem */
 			}
 
 			body {
@@ -404,6 +404,14 @@
 					}
 				}
 			}
+		}
+	}
+
+	@media (width >= 100rem) and (height >= 60rem) {
+		.page-inner {
+			border-style: solid;
+			border-width: 5px;
+			border-image: var(--border-image);
 		}
 	}
 
