@@ -43,6 +43,7 @@
 		--border-thickness: 3px;
 		--border-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120.092%22%20height%3D%2261.348%22%20viewBox%3D%220%200%20112.586%2057.514%22%3E%3Cpath%20d%3D%22M15.474%20996.801c5.573-.108%2011.154-.054%2016.714.091%205.006.097%2012.756.875%2019.148.622%204.28.486%208.603-.311%2012.911.288%206.164-.072%2012.31-1.003%2018.497-.664%205.81.334%2010.052.468%2017.518.331%207.402-.516%2010.784.102%2010.263%207.293-.302%206.127-.167%2011.363-.175%2016.043.035%208.648%201.362%2024.998-.566%2027.614-2.952%203.79-9.954%201.076-14.306%201.16-3.987-.144-9.602%201.103-13.523.042-4.88-.673-8.213.66-13.114.305-4.964%200-9.787-.844-14.57.312-5.884.777-13.383.644-19.2-.51-5.841-.903-9.964-.064-15.84-.128-4.778-.049-15.036%201.758-16.604-.035-1.748-1.85-.385-11.781-.438-15.645-.374-9.227-.536-15.603.13-24.823.085-1.613-1.135-8.421.014-10.21%202.414-3.571%209.257-1.587%2013.14-2.085z%22%20style%3D%22fill%3Anone%3Bstroke%3A%233c3c3c%3Bstroke-width%3A3%3Bstroke-linecap%3Around%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A10%3Bstroke-dasharray%3Anone%3Bstroke-opacity%3A1%22%20transform%3D%22translate(0%20-994.848)%22%2F%3E%3C%2Fsvg%3E%0A")
 			5 5 5 5 stretch stretch;
+		--separator-image-source: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22642.051%22%20height%3D%225.407%22%20viewBox%3D%220%200%20642.051%205.407%22%3E%3Cpath%20d%3D%22M1.668%201049.733q7.657-.345%2033.976.365%2026.319.709%2041.4.563t17.525-.028%2024.257.068q21.813-.05%2030.352-.332t14.546-.295q6.005-.014%2017.42-.527%2011.415-.514%2015.94-.43%204.527.084%2013%20.678t29.122.201q20.65-.391%2030.292-.103t31.783.347%2040.829-.117%2028.767-.593q10.08-.417%2024.211-.156%2014.133.261%2052.143.06%2038.01-.203%2054.483-.12%2016.474.085%2038.464-.323%2021.989-.407%2033.694-.39%2011.705.015%2029.927.683%2018.222.667%2021.589.497t14.995-.272%22%20style%3D%22fill%3Anone%3Bstroke%3A%233c3c3c%3Bstroke-width%3A3%3Bstroke-linecap%3Around%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A10%3Bstroke-dasharray%3Anone%3Bstroke-opacity%3A1%22%20transform%3D%22translate(0%20-1046.955)%22%2F%3E%3C%2Fsvg%3E");
 
 		/* focus */
 		--focus-ring-width: var(--border-thickness);
@@ -63,8 +64,6 @@
 			0 5px 5px -2px hsl(var(--shadow-color) / var(--shadow-strength-5)),
 			0 9px 9px -2px hsl(var(--shadow-color) / var(--shadow-strength-6)),
 			0 16px 16px -2px hsl(var(--shadow-color) / var(--shadow-strength-7));
-
-		/*font-size: clamp(1rem, 0.9286rem + 0.3571vw, 1.25rem);*/
 	}
 
 	body {
@@ -151,7 +150,7 @@
 			position: absolute;
 			inset: calc(-1 * var(--border-thickness));
 			border-style: solid;
-			border-width: 5px;
+			border-width: calc(var(--border-thickness) + 2px);
 			border-image: var(--border-image);
 			pointer-events: none;
 		}
@@ -196,7 +195,9 @@
 		}
 
 		&[open] summary {
-			border-block-end: var(--border-thickness) solid;
+			border-style: solid;
+			border-width: 0px 0px calc(var(--border-thickness) + 2px) 0px;
+			border-image: var(--separator-image-source) 0 3 5 3 stretch stretch;
 
 			svg {
 				rotate: 0deg;
@@ -249,7 +250,9 @@
 
 	footer {
 		padding-block-start: 1lh;
-		border-block-start: var(--border-thickness) solid;
+		border-style: solid;
+		border-width: calc(var(--border-thickness) + 2px) 0px 0px 0px;
+		border-image: var(--separator-image-source) 5 3 0 3 stretch stretch;
 
 		> * {
 			--flow-space: 1em;
@@ -321,14 +324,14 @@
 
 			footer {
 				padding-block-start: unset;
-				border-block-start: none;
+				border: none;
 
 				max-inline-size: fit-content;
 				align-self: end;
 			}
 
 			.diagram {
-				--card-aspect-ratio: 0.66; /* at 1024px the card needs this ratio */
+				--card-aspect-ratio: 0.65; /* at 1024px the card needs this ratio */
 				--card-vertical-offset: 4.5rem;
 				--card-horizontal-offset: 1rem;
 				--card-width: calc(
