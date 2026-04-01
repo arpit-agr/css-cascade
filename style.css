@@ -40,7 +40,7 @@
 		--animation-fade-in: fade-in 0.5s var(--ease-3);
 
 		/* border from DoodleCSS */
-		--border-thickness: 3px;
+		--border-thickness: 0.1875rem;
 		--border-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120.092%22%20height%3D%2261.348%22%20viewBox%3D%220%200%20112.586%2057.514%22%3E%3Cpath%20d%3D%22M15.474%20996.801c5.573-.108%2011.154-.054%2016.714.091%205.006.097%2012.756.875%2019.148.622%204.28.486%208.603-.311%2012.911.288%206.164-.072%2012.31-1.003%2018.497-.664%205.81.334%2010.052.468%2017.518.331%207.402-.516%2010.784.102%2010.263%207.293-.302%206.127-.167%2011.363-.175%2016.043.035%208.648%201.362%2024.998-.566%2027.614-2.952%203.79-9.954%201.076-14.306%201.16-3.987-.144-9.602%201.103-13.523.042-4.88-.673-8.213.66-13.114.305-4.964%200-9.787-.844-14.57.312-5.884.777-13.383.644-19.2-.51-5.841-.903-9.964-.064-15.84-.128-4.778-.049-15.036%201.758-16.604-.035-1.748-1.85-.385-11.781-.438-15.645-.374-9.227-.536-15.603.13-24.823.085-1.613-1.135-8.421.014-10.21%202.414-3.571%209.257-1.587%2013.14-2.085z%22%20style%3D%22fill%3Anone%3Bstroke%3A%233c3c3c%3Bstroke-width%3A3%3Bstroke-linecap%3Around%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A10%3Bstroke-dasharray%3Anone%3Bstroke-opacity%3A1%22%20transform%3D%22translate(0%20-994.848)%22%2F%3E%3C%2Fsvg%3E%0A")
 			5 5 5 5 stretch stretch;
 		--separator-image-source: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22642.051%22%20height%3D%225.407%22%20viewBox%3D%220%200%20642.051%205.407%22%3E%3Cpath%20d%3D%22M1.668%201049.733q7.657-.345%2033.976.365%2026.319.709%2041.4.563t17.525-.028%2024.257.068q21.813-.05%2030.352-.332t14.546-.295q6.005-.014%2017.42-.527%2011.415-.514%2015.94-.43%204.527.084%2013%20.678t29.122.201q20.65-.391%2030.292-.103t31.783.347%2040.829-.117%2028.767-.593q10.08-.417%2024.211-.156%2014.133.261%2052.143.06%2038.01-.203%2054.483-.12%2016.474.085%2038.464-.323%2021.989-.407%2033.694-.39%2011.705.015%2029.927.683%2018.222.667%2021.589.497t14.995-.272%22%20style%3D%22fill%3Anone%3Bstroke%3A%233c3c3c%3Bstroke-width%3A3%3Bstroke-linecap%3Around%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A10%3Bstroke-dasharray%3Anone%3Bstroke-opacity%3A1%22%20transform%3D%22translate(0%20-1046.955)%22%2F%3E%3C%2Fsvg%3E");
@@ -104,7 +104,8 @@
 
 @layer blocks {
 	header,
-	.diagram > * {
+	.diagram > *,
+	footer > * {
 		--flow-space: 0.75lh;
 	}
 
@@ -113,25 +114,21 @@
 		@supports not (text-box: trim-both cap alphabetic) {
 			--flow-space: 0em;
 		}
-		container-type: inline-size;
 
 		h1 {
-			font-size: var(--step-5);
+			font-size: var(--step-6);
 			text-transform: uppercase;
 			letter-spacing: -0.075em;
 		}
-
-		p {
-			--measure: 35ch;
-		}
 	}
 
-	@supports (inline-size: calc(sibling-index() * 1em)) {
+	details,
+	.connector {
 		@media (prefers-reduced-motion: no-preference) {
-			details,
-			.connector {
-				opacity: 0;
-				animation: var(--animation-fade-in) forwards;
+			opacity: 0;
+			animation: var(--animation-fade-in) forwards;
+
+			@supports (inline-size: calc(sibling-index() * 1em)) {
 				animation-delay: calc((sibling-index() + 1) * 50ms);
 			}
 		}
@@ -140,19 +137,35 @@
 	details {
 		--details-padding: min(6cqi, 0.5lh);
 
+		position: relative;
 		container-type: inline-size;
 		background-color: var(--color-surface-default);
 		box-shadow: var(--shadow-4);
-		rotate: var(--rotate);
+
+		transition: background-color var(--transition-slow);
+
+		&::before,
+		&::after {
+			pointer-events: none;
+			position: absolute;
+		}
 
 		&::before {
 			content: "";
-			position: absolute;
 			inset: calc(-1 * var(--border-thickness));
 			border-style: solid;
 			border-width: calc(var(--border-thickness) + 2px);
 			border-image: var(--border-image);
-			pointer-events: none;
+		}
+
+		&::after {
+			content: attr(data-step) / "";
+			inset-block-start: 0;
+			inset-inline-end: 0;
+			translate: 0% -50%;
+			font-size: var(--step-3);
+			-webkit-text-stroke: 0.5em var(--color-surface-default);
+			paint-order: stroke;
 		}
 
 		> * {
@@ -165,20 +178,12 @@
 			display: flex;
 			align-items: first baseline;
 			gap: 0.5ch;
+			border-style: solid;
+			border-width: 0px 0px calc(var(--border-thickness) + 2px) 0px;
+			transition: background-color var(--transition-slow);
 
 			&::marker {
 				content: "";
-			}
-
-			&::before {
-				content: attr(data-step) / "";
-				position: absolute;
-				inset-block-start: 0;
-				inset-inline-end: 0;
-				translate: 0% -50%;
-				font-size: var(--step-3);
-				-webkit-text-stroke: 0.5em var(--color-surface-default);
-				paint-order: stroke;
 			}
 
 			svg {
@@ -195,8 +200,6 @@
 		}
 
 		&[open] summary {
-			border-style: solid;
-			border-width: 0px 0px calc(var(--border-thickness) + 2px) 0px;
 			border-image: var(--separator-image-source) 0 3 5 3 stretch stretch;
 
 			svg {
@@ -211,11 +214,6 @@
 		ol {
 			padding-inline-start: 2em;
 		}
-	}
-
-	details,
-	summary {
-		transition: background-color var(--transition-slow);
 	}
 
 	details:not([open]):has(summary:hover, summary:focus-visible),
@@ -254,10 +252,6 @@
 		border-width: calc(var(--border-thickness) + 2px) 0px 0px 0px;
 		border-image: var(--separator-image-source) 5 3 0 3 stretch stretch;
 
-		> * {
-			--flow-space: 1em;
-		}
-
 		ul {
 			padding-inline-start: 1em;
 			font-size: var(--step--1);
@@ -272,184 +266,175 @@
 		}
 	}
 
-	/*
-		FIXME: not (font: -apple-system-body) to exclude safari because chain of three or more anchor-positioned elements doesn't work in Safari yet
-	*/
-	@supports (anchor-name: --card) and (not (font: -apple-system-body)) {
-		@media (width >= 64rem) and (orientation: landscape) {
-			:root {
-				--wrapper-max-width: 1536px; /* 96rem */
+	@media (width >= 80rem) and (orientation: landscape) {
+		:root {
+			--wrapper-max-width: 104rem;
+		}
+
+		body {
+			/* Baseline Newly available as of April 16, 2024. */
+			/* https://web.dev/blog/align-content-block */
+			place-content: center;
+		}
+
+		.page-inner {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			grid-template-rows: repeat(9, 1fr);
+			column-gap: 1em;
+			min-block-size: clamp(51rem, 100svh, 60rem);
+
+			> *:not(header) {
+				--flow-space: 0;
 			}
+		}
 
-			body {
-				place-content: center;
+		header,
+		footer {
+			z-index: 1;
+		}
+
+		header {
+			grid-column: -4/-1;
+			grid-row: 1/3;
+
+			justify-self: end;
+			text-align: end;
+
+			h1 {
+				font-size: var(--step-5);
 			}
+		}
 
-			.page-inner {
-				display: grid;
-				grid-template-columns: 1fr;
-				grid-template-rows: 1fr;
-				align-items: center;
+		footer {
+			padding-block-start: unset;
+			border: none;
 
-				> * {
-					grid-column: 1/-1;
-					grid-row: 1/-1;
+			grid-column: 1/5;
+			grid-row: -3/-1;
+			align-self: end;
+		}
+
+		main,
+		.diagram {
+			grid-column: 1/-1;
+			grid-row: 1/-1;
+
+			display: grid;
+			grid-template-columns: subgrid;
+			grid-template-rows: subgrid;
+		}
+
+		.diagram {
+			grid-template-areas:
+				"step-1 . . . . . ."
+				"step-1 step-2 . . . . ."
+				"step-1 step-2 step-3 . . . ."
+				"connector-1 step-2 step-3 step-4 . . ."
+				". connector-2 step-3 step-4 step-5 . ."
+				". . connector-3 step-4 step-5 step-6 ."
+				". . . connector-4 step-5 step-6 step-7"
+				". . . . connector-5 step-6 step-7"
+				". . . . . connector-6 step-7";
+
+			> * {
+				--flow-space: 0;
+				grid-area: var(--grid-area);
+			}
+		}
+
+		details {
+			margin-inline-end: unset;
+			z-index: 1;
+
+			@supports (rotate: random(-2deg, 2deg)) {
+				rotate: random(-4deg, 4deg);
+				transition:
+					background-color var(--transition-slow),
+					rotate var(--transition-slow) var(--ease-3);
+
+				&:hover {
+					rotate: 0deg;
 				}
+			}
 
-				> *:not(:first-child) {
-					--flow-space: 0;
+			&::details-content {
+				position: relative;
+				z-index: 1;
+
+				font-size: calc(var(--step--2) + 0.75cqi);
+				@supports not (text-box: trim-both cap alphabetic) {
+					font-size: calc(var(--step--2) + 0.33cqi);
 				}
 			}
 
-			header,
-			footer {
+			li + li {
+				border-block-start: calc(var(--border-thickness) - 2px) dashed
+					oklch(from var(--color-surface-default) calc(l - 0.125) c h);
+			}
+		}
+
+		summary {
+			border-color: #0000;
+
+			h2 {
+				font-size: calc(var(--step--1) + 2cqi);
 				z-index: 1;
 			}
 
-			header {
-				container-type: unset;
-				max-inline-size: fit-content;
-				justify-self: end;
-				align-self: start;
-				text-align: end;
-
-				p {
-					margin-inline-start: auto;
-				}
-			}
-
-			main {
-				position: relative;
-			}
-
-			footer {
-				padding-block-start: unset;
-				border: none;
-
-				max-inline-size: fit-content;
-				align-self: end;
-			}
-
-			.diagram {
-				--card-aspect-ratio: 0.65; /* at 1024px the card needs this ratio */
-				--card-vertical-offset: 4.5rem;
-				--card-horizontal-offset: 1rem;
-				--card-width: calc(
-					(100cqi / 7) - (var(--card-horizontal-offset) * 6 / 7)
-				);
-				--card-height: calc(var(--card-width) / var(--card-aspect-ratio));
-
-				block-size: calc(
-					var(--card-height) + (6 * var(--card-vertical-offset)) - 0.5lh
-				);
-				container-type: inline-size;
-				translate: -0.25lh 0;
-
-				> * {
-					--flow-space: 0;
-				}
-			}
-
-			details {
-				margin-inline-end: unset;
-				anchor-name: --card;
+			&::after {
+				content: "";
 				position: absolute;
-				position-anchor: --card;
-				inset-block-start: calc(anchor(top) + var(--card-vertical-offset));
-				inset-inline-start: calc(anchor(end) + var(--card-horizontal-offset));
+				inset: 0;
+			}
+		}
 
-				inline-size: var(--card-width);
-				aspect-ratio: var(--card-aspect-ratio);
+		.connector {
+			max-inline-size: unset;
+			container-type: inline-size;
+			justify-self: stretch;
 
-				&::details-content {
-					position: relative;
-					font-size: 7.75cqi;
-					z-index: 1;
-				}
+			display: grid;
+			justify-content: end;
+			align-items: center;
+			justify-items: end;
+			translate: 1ex -1ex;
 
-				li + li {
-					border-block-start: 1px dashed
-						oklch(from var(--color-surface-default) calc(l - 0.125) c h);
-				}
+			> * {
+				grid-column: 1/-1;
+				grid-row: 1/-1;
 			}
 
-			summary {
-				h2 {
-					font-size: 10cqi;
-				}
+			svg {
+				--icon-size: 2lh;
 
-				&::after {
-					content: "";
-					position: absolute;
-					inset: 0;
-				}
+				position: static;
+				inset-block-start: unset;
+				inset-inline-start: unset;
+				scale: unset;
+				translate: unset;
+
+				fill: var(--color-fill);
+				rotate: 90deg;
 			}
 
-			.connector {
-				max-inline-size: unset;
-				display: flex;
-				justify-content: end;
-				position: absolute;
-				position-anchor: --card;
-				inset-block-start: anchor(end);
-				inset-inline-start: anchor(start);
-				inset-inline-end: anchor(end);
-				block-size: calc(0.75 * var(--card-vertical-offset));
-				container-type: inline-size;
+			p {
+				--measure: 13ch;
+				text-box: unset;
 
-				svg {
-					--icon-size: calc(0.75 * var(--card-vertical-offset));
-
-					inset-inline-start: unset;
-					scale: unset;
-					translate: unset;
-
-					position: absolute;
-					inset-block-start: 0;
-					inset-inline-end: 0;
-
-					fill: var(--color-fill);
-					rotate: 90deg;
-					translate: 6cqi 2cqi;
-				}
-
-				p {
-					--measure: 13ch;
-					text-box: unset;
-
-					align-self: center;
-					background-color: var(--color-surface-default);
-					font-size: 7cqi;
-					line-height: var(--leading-tight);
-					text-align: center;
-					z-index: 1;
-				}
-			}
-
-			@supports (inline-size: calc(sibling-index() * 1em)) {
-				@media (prefers-reduced-motion: no-preference) {
-					details {
-						opacity: unset;
-						inset-block-start: 0%;
-						inset-inline-start: 0%;
-						z-index: calc(100 - sibling-index());
-						animation: expand-cards 400ms var(--ease-3) forwards;
-					}
-
-					.connector {
-						opacity: 0;
-						animation: var(--animation-fade-in) forwards;
-						animation-delay: calc(((sibling-index() + 1) * 50ms) + 50ms);
-					}
-				}
+				background-color: var(--color-surface-default);
+				font-size: calc(var(--step--3) + 2cqi);
+				text-align: center;
+				translate: -1ex 0ex;
+				z-index: 1;
 			}
 		}
 	}
 
-	@media (width >= 100rem) and (height >= 60rem) {
+	@media (width >= calc(104rem + 4rem)) and (height >= 60rem) {
 		.page-inner {
 			border-style: solid;
-			border-width: 5px;
+			border-width: calc(var(--border-thickness) + 2px);
 			border-image: var(--border-image);
 		}
 	}
@@ -457,15 +442,6 @@
 	@keyframes fade-in {
 		to {
 			opacity: 1;
-		}
-	}
-
-	/* inspired from ebay playbook */
-	@keyframes expand-cards {
-		to {
-			inset-block-start: calc(anchor(top) + var(--card-vertical-offset));
-			inset-inline-start: calc(anchor(end) + var(--card-horizontal-offset));
-			rotate: var(--rotate);
 		}
 	}
 }
@@ -546,10 +522,6 @@
 	a[href],
 	summary {
 		cursor: pointer;
-	}
-
-	a[href],
-	summary {
 		touch-action: manipulation;
 		-webkit-tap-highlight-color: transparent;
 	}
