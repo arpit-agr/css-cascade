@@ -66,6 +66,11 @@
 			0 16px 16px -2px hsl(var(--shadow-color) / var(--shadow-strength-7));
 	}
 
+	html {
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-text-normal) #0000;
+	}
+
 	body {
 		font-size: var(--step-0);
 	}
