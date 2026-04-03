@@ -75,7 +75,6 @@
 		font-size: var(--step-0);
 	}
 
-	main,
 	footer {
 		--flow-space: 2lh;
 	}
