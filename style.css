@@ -549,11 +549,14 @@
 			block-size: 0;
 			opacity: 0;
 			overflow-y: clip;
-			transition:
-				content-visibility var(--transition-slow, 200ms) allow-discrete,
-				margin-block-start var(--transition-slow, 200ms),
-				block-size var(--transition-slow, 200ms),
-				opacity var(--transition-slow, 200ms);
+
+			@media (prefers-reduced-motion: no-preference) {
+				transition:
+					content-visibility var(--transition-slow, 200ms) allow-discrete,
+					margin-block-start var(--transition-slow, 200ms),
+					block-size var(--transition-slow, 200ms),
+					opacity var(--transition-slow, 200ms);
+			}
 		}
 
 		details[open]::details-content {
