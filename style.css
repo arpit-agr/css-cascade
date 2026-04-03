@@ -207,7 +207,7 @@
 			}
 		}
 
-		&::details-content {
+		summary + * {
 			font-family: var(--font-mono);
 		}
 
@@ -216,11 +216,13 @@
 		}
 	}
 
-	details:not([open]):has(summary:hover, summary:focus-visible),
-	details[open] summary:hover {
-		background-color: oklch(
-			from var(--color-surface-default) calc(l - 0.05) c h
-		);
+	@media (hover: hover) {
+		details:not([open]):has(summary:hover, summary:focus-visible),
+		details[open] summary:hover {
+			background-color: oklch(
+				from var(--color-surface-default) calc(l - 0.05) c h
+			);
+		}
 	}
 
 	.connector {
@@ -358,7 +360,7 @@
 				}
 			}
 
-			&::details-content {
+			summary + * {
 				position: relative;
 				z-index: 1;
 
@@ -542,20 +544,22 @@
 	}
 
 	/* Details & Summary */
-	details::details-content {
-		block-size: 0;
-		opacity: 0;
-		overflow-y: clip;
-		transition:
-			content-visibility var(--transition-slow, 200ms) allow-discrete,
-			margin-block-start var(--transition-slow, 200ms),
-			block-size var(--transition-slow, 200ms),
-			opacity var(--transition-slow, 200ms);
-	}
+	@supports selector(::details-content) {
+		details::details-content {
+			block-size: 0;
+			opacity: 0;
+			overflow-y: clip;
+			transition:
+				content-visibility var(--transition-slow, 200ms) allow-discrete,
+				margin-block-start var(--transition-slow, 200ms),
+				block-size var(--transition-slow, 200ms),
+				opacity var(--transition-slow, 200ms);
+		}
 
-	details[open]::details-content {
-		block-size: auto;
-		opacity: 1;
+		details[open]::details-content {
+			block-size: auto;
+			opacity: 1;
+		}
 	}
 
 	/* Interaction (Focus, Selection & Target) */
