@@ -109,7 +109,7 @@
 
 @layer blocks {
 	header,
-	.diagram > *,
+	.card,
 	footer > * {
 		--flow-space: 0.75lh;
 	}
@@ -127,8 +127,9 @@
 		}
 	}
 
-	details,
-	.connector {
+	.card {
+		--card-padding: min(6cqi, 0.5lh);
+
 		@media (prefers-reduced-motion: no-preference) {
 			opacity: 0;
 			animation: var(--animation-fade-in) forwards;
@@ -140,8 +141,6 @@
 	}
 
 	details {
-		--details-padding: min(6cqi, 0.5lh);
-
 		position: relative;
 		container-type: inline-size;
 		background-color: var(--color-surface-default);
@@ -151,8 +150,8 @@
 
 		&::before,
 		&::after {
-			pointer-events: none;
 			position: absolute;
+			pointer-events: none;
 		}
 
 		&::before {
@@ -174,11 +173,11 @@
 		}
 
 		> * {
-			padding: var(--details-padding);
+			padding: var(--card-padding);
 		}
 
 		summary {
-			--focus-ring-offset: calc(-2 / 3 * var(--details-padding));
+			--focus-ring-offset: calc(-2 / 3 * var(--card-padding));
 
 			display: flex;
 			align-items: first baseline;
@@ -231,8 +230,9 @@
 	}
 
 	.connector {
-		max-inline-size: fit-content;
 		position: relative;
+		max-inline-size: fit-content;
+		margin-inline-start: var(--card-padding);
 
 		svg {
 			--icon-size: 1lh;
@@ -260,14 +260,14 @@
 		border-image: var(--separator-image-source) 5 3 0 3 stretch stretch;
 
 		ul {
-			padding-inline-start: 1em;
+			padding-inline-start: 2em;
 			font-size: var(--step--1);
 		}
 	}
 
 	@supports (inline-size: calc(sibling-index() * 1em)) {
 		@media (width >= 40rem) {
-			details {
+			.card {
 				margin-inline-end: calc((13 - sibling-index()) * 1em);
 			}
 		}
@@ -337,21 +337,26 @@
 				"step-1 . . . . . ."
 				"step-1 step-2 . . . . ."
 				"step-1 step-2 step-3 . . . ."
-				"connector-1 step-2 step-3 step-4 . . ."
-				". connector-2 step-3 step-4 step-5 . ."
-				". . connector-3 step-4 step-5 step-6 ."
-				". . . connector-4 step-5 step-6 step-7"
-				". . . . connector-5 step-6 step-7"
-				". . . . . connector-6 step-7";
+				"step-1 step-2 step-3 step-4 . . ."
+				". step-2 step-3 step-4 step-5 . ."
+				". . step-3 step-4 step-5 step-6 ."
+				". . . step-4 step-5 step-6 step-7"
+				". . . . step-5 step-6 step-7"
+				". . . . . step-6 step-7";
+		}
 
-			> * {
-				--flow-space: 0;
-				grid-area: var(--grid-area);
-			}
+		.card {
+			--flow-space: 0;
+			margin-inline-end: unset;
+			grid-area: var(--grid-area);
+
+			display: grid;
+			grid-template-columns: 1fr;
+			grid-template-rows: subgrid;
 		}
 
 		details {
-			margin-inline-end: unset;
+			grid-row: span 3;
 			z-index: 1;
 
 			@supports (rotate: random(-2deg, 2deg)) {
@@ -367,9 +372,9 @@
 
 			summary + * {
 				position: relative;
+				font-size: calc(var(--step--2) + 0.75cqi);
 				z-index: 1;
 
-				font-size: calc(var(--step--2) + 0.75cqi);
 				@supports not (text-box: trim-both cap alphabetic) {
 					font-size: calc(var(--step--2) + 0.33cqi);
 				}
@@ -398,6 +403,8 @@
 
 		.connector {
 			max-inline-size: unset;
+			margin-inline-start: unset;
+
 			container-type: inline-size;
 			justify-self: stretch;
 
@@ -426,7 +433,7 @@
 			}
 
 			p {
-				--measure: 13ch;
+				--measure: 13.75ch;
 				text-box: unset;
 
 				background-color: var(--color-surface-default);

@@ -39,251 +39,249 @@
 		<div class="page-inner flow region wrapper">
 			<header class="flow">
 				<h1>CSS Cascade</h1>
-				<p class="text-balance">
+				<p class="text-balance" id="desc">
 					The algorithm that determines the "winning value" from a list of
 					competing declarations.
 				</p>
 			</header>
 			<main>
-				<div class="diagram flow">
-					<details
-						style="--grid-area: step-1"
-						data-step="1"
-						name="cascade-step"
-					>
-						<summary>
-							<svg width="21" height="15" aria-hidden="true">
-								<use href="#caret" />
-							</svg>
-							<span class="visually-hidden">Step 1:</span>
-							<h2>Origin and importance</h2>
-						</summary>
-						<div>
-							<ol>
-								<li>transition</li>
-								<li>
-									<span class="visually-hidden">important browser</span>
-									<span aria-hidden="true">!browser</span>
-								</li>
-								<li>
-									<span class="visually-hidden">important user</span>
-									<span aria-hidden="true">!user</span>
-								</li>
-								<li>
-									<span class="visually-hidden">important author</span>
-									<span aria-hidden="true">!author</span>
-								</li>
-								<li>animation</li>
-								<li>author</li>
-								<li>user</li>
-								<li>browser</li>
-							</ol>
-						</div>
-					</details>
-					<div class="connector" style="--grid-area: connector-1">
-						<p>same origin? <span class="visually-hidden">then go to</span></p>
-						<svg width="16" height="16" aria-hidden="true">
-							<use href="#arrow" />
-						</svg>
-					</div>
-					<details
-						style="--grid-area: step-2"
-						data-step="2"
-						name="cascade-step"
-					>
-						<summary>
-							<svg width="21" height="15" aria-hidden="true">
-								<use href="#caret" />
-							</svg>
-							<span class="visually-hidden">Step 2:</span>
-							<h2>Context</h2>
-						</summary>
-						<div class="flow" style="--flow-space: 1em">
+				<ol
+					class="diagram flow"
+					role="list"
+					aria-label="Steps"
+					aria-describedby="desc"
+				>
+					<li class="card flow" style="--grid-area: step-1">
+						<details data-step="1" name="cascade-step">
+							<summary>
+								<svg width="21" height="15" aria-hidden="true">
+									<use href="#caret" />
+								</svg>
+								<span class="visually-hidden">Step 1:</span>
+								<h2>Origin and importance</h2>
+							</summary>
+							<div>
+								<ol>
+									<li>transition</li>
+									<li>
+										<span class="visually-hidden">important browser</span>
+										<span aria-hidden="true">!browser</span>
+									</li>
+									<li>
+										<span class="visually-hidden">important user</span>
+										<span aria-hidden="true">!user</span>
+									</li>
+									<li>
+										<span class="visually-hidden">important author</span>
+										<span aria-hidden="true">!author</span>
+									</li>
+									<li>animation</li>
+									<li>author</li>
+									<li>user</li>
+									<li>browser</li>
+								</ol>
+							</div>
+						</details>
+						<div class="connector" style="--grid-area: connector-1">
 							<p>
-								Relevant when you're dealing with the shadow DOM and
-								<a
-									href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::part"
-									><code>::part()</code>
-								</a>
+								same origin? <span class="visually-hidden">then go to</span>
 							</p>
-							<ol>
-								<li>
-									<span class="visually-hidden">important inner (shadow)</span>
-									<span aria-hidden="true">!inner (shadow)</span>
-								</li>
-								<li>
-									<span class="visually-hidden">
-										important outer (<code>::part</code>)
-									</span>
-									<span aria-hidden="true">!outer (<code>::part</code>)</span>
-								</li>
-								<li>outer (<code>::part</code>)</li>
-								<li>inner (shadow)</li>
-							</ol>
-						</div>
-					</details>
-					<div class="connector" style="--grid-area: connector-2">
-						<p>same context? <span class="visually-hidden">then go to</span></p>
-						<svg width="16" height="16" aria-hidden="true">
-							<use href="#arrow" />
-						</svg>
-					</div>
-					<details
-						style="--grid-area: step-3"
-						data-step="3"
-						name="cascade-step"
-					>
-						<summary>
-							<svg width="21" height="15" aria-hidden="true">
-								<use href="#caret" />
+							<svg width="16" height="16" aria-hidden="true">
+								<use href="#arrow" />
 							</svg>
-							<span class="visually-hidden">Step 3:</span>
-							<h2>The style attribute</h2>
-						</summary>
-						<div>
+						</div>
+					</li>
+					<li class="card flow" style="--grid-area: step-2">
+						<details data-step="2" name="cascade-step">
+							<summary>
+								<svg width="21" height="15" aria-hidden="true">
+									<use href="#caret" />
+								</svg>
+								<span class="visually-hidden">Step 2:</span>
+								<h2>Context</h2>
+							</summary>
+							<div class="flow" style="--flow-space: 1em">
+								<p>
+									Relevant when you're dealing with the shadow DOM and
+									<a
+										href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::part"
+										><code>::part()</code>
+									</a>
+								</p>
+								<ol>
+									<li>
+										<span class="visually-hidden"
+											>important inner (shadow)</span
+										>
+										<span aria-hidden="true">!inner (shadow)</span>
+									</li>
+									<li>
+										<span class="visually-hidden">
+											important outer (<code>::part</code>)
+										</span>
+										<span aria-hidden="true">!outer (<code>::part</code>)</span>
+									</li>
+									<li>outer (<code>::part</code>)</li>
+									<li>inner (shadow)</li>
+								</ol>
+							</div>
+						</details>
+						<div class="connector" style="--grid-area: connector-2">
 							<p>
-								The declarations in a style attribute (inline styles) take
-								precedence over declarations mapped via a style rule.
+								same context? <span class="visually-hidden">then go to</span>
 							</p>
-						</div>
-					</details>
-					<div class="connector" style="--grid-area: connector-3">
-						<p>
-							no inline styles?
-							<span class="visually-hidden">then go to</span>
-						</p>
-						<svg width="16" height="16" aria-hidden="true">
-							<use href="#arrow" />
-						</svg>
-					</div>
-					<details
-						style="--grid-area: step-4"
-						data-step="4"
-						name="cascade-step"
-					>
-						<summary>
-							<svg width="21" height="15" aria-hidden="true">
-								<use href="#caret" />
+							<svg width="16" height="16" aria-hidden="true">
+								<use href="#arrow" />
 							</svg>
-							<span class="visually-hidden">Step 4:</span>
-							<h2>Layers</h2>
-						</summary>
-						<div>
-							<ol>
-								<li>
-									<span class="visually-hidden">important layer A</span>
-									<span aria-hidden="true">!layer A</span>
-								</li>
-								<li>
-									<span class="visually-hidden">important layer B</span>
-									<span aria-hidden="true">!layer B</span>
-								</li>
-								<li>
-									<span class="visually-hidden">important layer N</span>
-									<span aria-hidden="true">!layer N</span>
-								</li>
-								<li>
-									<span class="visually-hidden">important unlayered</span>
-									<span aria-hidden="true">!unlayered</span>
-								</li>
-								<li>unlayered</li>
-								<li>layer N</li>
-								<li>layer B</li>
-								<li>layer A</li>
-							</ol>
 						</div>
-					</details>
-					<div class="connector" style="--grid-area: connector-4">
-						<p>same layer? <span class="visually-hidden">then go to</span></p>
-						<svg width="16" height="16" aria-hidden="true">
-							<use href="#arrow" />
-						</svg>
-					</div>
-					<details
-						style="--grid-area: step-5"
-						data-step="5"
-						name="cascade-step"
-					>
-						<summary>
-							<svg width="21" height="15" aria-hidden="true">
-								<use href="#caret" />
-							</svg>
-							<span class="visually-hidden">Step 5:</span>
-							<h2>Specificity</h2>
-						</summary>
-						<div>
-							<ol>
-								<li>ID</li>
-								<li>class, attribute, psuedo-class</li>
-								<li>element, psuedo-element</li>
-								<li>
-									<span class="visually-hidden">
-										universal selector, next sibling combinator, child
-										combinator, subsequent-sibling combinator
-									</span>
-									<span aria-hidden="true">
-										<code>*</code>
-										<code>+</code>
-										<code>&gt;</code>
-										<code>~</code>
-									</span>
-								</li>
-							</ol>
-						</div>
-					</details>
-					<div class="connector" style="--grid-area: connector-5">
-						<p>
-							same specificity? <span class="visually-hidden">then go to</span>
-						</p>
-						<svg width="16" height="16" aria-hidden="true">
-							<use href="#arrow" />
-						</svg>
-					</div>
-					<details
-						style="--grid-area: step-6"
-						data-step="6"
-						name="cascade-step"
-					>
-						<summary>
-							<svg width="21" height="15" aria-hidden="true">
-								<use href="#caret" />
-							</svg>
-							<span class="visually-hidden">Step 6:</span>
-							<h2>Scope proximity</h2>
-						</summary>
-						<div>
+					</li>
+					<li class="card flow" style="--grid-area: step-3">
+						<details data-step="3" name="cascade-step">
+							<summary>
+								<svg width="21" height="15" aria-hidden="true">
+									<use href="#caret" />
+								</svg>
+								<span class="visually-hidden">Step 3:</span>
+								<h2>The style attribute</h2>
+							</summary>
+							<div>
+								<p>
+									The declarations in a style attribute (inline styles) take
+									precedence over declarations mapped via a style rule.
+								</p>
+							</div>
+						</details>
+						<div class="connector" style="--grid-area: connector-3">
 							<p>
-								The style that has the smallest number of hops up the DOM tree
-								hierarchy to the scope root wins.
+								no style attribute?
+								<span class="visually-hidden">then go to</span>
 							</p>
-						</div>
-					</details>
-					<div class="connector" style="--grid-area: connector-6">
-						<p>
-							same proximity? or no scope?
-							<span class="visually-hidden">then go to</span>
-						</p>
-						<svg width="16" height="16" aria-hidden="true">
-							<use href="#arrow" />
-						</svg>
-					</div>
-					<details
-						style="--grid-area: step-7"
-						data-step="7"
-						name="cascade-step"
-					>
-						<summary>
-							<svg width="21" height="15" aria-hidden="true">
-								<use href="#caret" />
+							<svg width="16" height="16" aria-hidden="true">
+								<use href="#arrow" />
 							</svg>
-							<span class="visually-hidden">Step 7:</span>
-							<h2>Order of appearance</h2>
-						</summary>
-						<div>
-							<p>Last declaration in the document order wins.</p>
 						</div>
-					</details>
-				</div>
+					</li>
+					<li class="card flow" style="--grid-area: step-4">
+						<details data-step="4" name="cascade-step">
+							<summary>
+								<svg width="21" height="15" aria-hidden="true">
+									<use href="#caret" />
+								</svg>
+								<span class="visually-hidden">Step 4:</span>
+								<h2>Layers</h2>
+							</summary>
+							<div>
+								<ol>
+									<li>
+										<span class="visually-hidden">important layer A</span>
+										<span aria-hidden="true">!layer A</span>
+									</li>
+									<li>
+										<span class="visually-hidden">important layer B</span>
+										<span aria-hidden="true">!layer B</span>
+									</li>
+									<li>
+										<span class="visually-hidden">important layer N</span>
+										<span aria-hidden="true">!layer N</span>
+									</li>
+									<li>
+										<span class="visually-hidden">important unlayered</span>
+										<span aria-hidden="true">!unlayered</span>
+									</li>
+									<li>unlayered</li>
+									<li>layer N</li>
+									<li>layer B</li>
+									<li>layer A</li>
+								</ol>
+							</div>
+						</details>
+						<div class="connector" style="--grid-area: connector-4">
+							<p>same layer? <span class="visually-hidden">then go to</span></p>
+							<svg width="16" height="16" aria-hidden="true">
+								<use href="#arrow" />
+							</svg>
+						</div>
+					</li>
+					<li class="card flow" style="--grid-area: step-5">
+						<details data-step="5" name="cascade-step">
+							<summary>
+								<svg width="21" height="15" aria-hidden="true">
+									<use href="#caret" />
+								</svg>
+								<span class="visually-hidden">Step 5:</span>
+								<h2>Specificity</h2>
+							</summary>
+							<div>
+								<ol>
+									<li>ID</li>
+									<li>class, attribute, psuedo-class</li>
+									<li>element, psuedo-element</li>
+									<li>
+										<span class="visually-hidden">
+											universal selector, next sibling combinator, child
+											combinator, subsequent-sibling combinator
+										</span>
+										<span aria-hidden="true">
+											<code>*</code>
+											<code>+</code>
+											<code>&gt;</code>
+											<code>~</code>
+										</span>
+									</li>
+								</ol>
+							</div>
+						</details>
+						<div class="connector" style="--grid-area: connector-5">
+							<p>
+								same specificity?
+								<span class="visually-hidden">then go to</span>
+							</p>
+							<svg width="16" height="16" aria-hidden="true">
+								<use href="#arrow" />
+							</svg>
+						</div>
+					</li>
+					<li class="card flow" style="--grid-area: step-6">
+						<details data-step="6" name="cascade-step">
+							<summary>
+								<svg width="21" height="15" aria-hidden="true">
+									<use href="#caret" />
+								</svg>
+								<span class="visually-hidden">Step 6:</span>
+								<h2>Scope proximity</h2>
+							</summary>
+							<div>
+								<p>
+									The style that has the smallest number of hops up the DOM tree
+									hierarchy to the scope root wins.
+								</p>
+							</div>
+						</details>
+						<div class="connector" style="--grid-area: connector-6">
+							<p>
+								same proximity? or no scope?
+								<span class="visually-hidden">then go to</span>
+							</p>
+							<svg width="16" height="16" aria-hidden="true">
+								<use href="#arrow" />
+							</svg>
+						</div>
+					</li>
+					<li class="card flow" style="--grid-area: step-7">
+						<details data-step="7" name="cascade-step">
+							<summary>
+								<svg width="21" height="15" aria-hidden="true">
+									<use href="#caret" />
+								</svg>
+								<span class="visually-hidden">Step 7:</span>
+								<h2>Order of appearance</h2>
+							</summary>
+							<div>
+								<p>Last declaration in the document order wins.</p>
+							</div>
+						</details>
+					</li>
+				</ol>
 			</main>
 			<footer class="credits flow">
 				<h2>Credits:</h2>
