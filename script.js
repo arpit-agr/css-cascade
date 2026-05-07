@@ -11,7 +11,6 @@ for (const widget of document.querySelectorAll(".disclosure-widget")) {
 	label.append(...heading.childNodes);
 
 	const button = document.createElement("button");
-	button.type = "button";
 	button.setAttribute("aria-expanded", "false");
 	button.setAttribute("aria-controls", panelId);
 	button.append(label);
