@@ -1,9 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>CSS Cascade</title>
+		<script type="module">
+			document.documentElement.classList.remove("no-js");
+			document.documentElement.classList.add("js");
+		</script>
 		<style>
 			@font-face {
 				font-family: "Short Stack";
@@ -52,15 +56,12 @@
 					aria-describedby="desc"
 				>
 					<li class="card flow" style="--grid-area: step-1">
-						<details data-step="1">
-							<summary>
-								<svg width="21" height="15" aria-hidden="true">
-									<use href="#caret" />
-								</svg>
+						<div class="disclosure-widget" data-step="1">
+							<h2>
 								<span class="visually-hidden">Step 1:</span>
-								<h2>Origin and importance</h2>
-							</summary>
-							<div>
+								Origin and importance
+							</h2>
+							<div class="disclosure-widget-panel">
 								<ol>
 									<li>transition</li>
 									<li>
@@ -81,7 +82,7 @@
 									<li>browser</li>
 								</ol>
 							</div>
-						</details>
+						</div>
 						<div class="connector" style="--grid-area: connector-1">
 							<p>
 								same origin? <span class="visually-hidden">then go to</span>
@@ -92,15 +93,15 @@
 						</div>
 					</li>
 					<li class="card flow" style="--grid-area: step-2">
-						<details data-step="2">
-							<summary>
-								<svg width="21" height="15" aria-hidden="true">
-									<use href="#caret" />
-								</svg>
+						<div class="disclosure-widget" data-step="2">
+							<h2>
 								<span class="visually-hidden">Step 2:</span>
-								<h2>Context</h2>
-							</summary>
-							<div class="flow" style="--flow-space: 1em">
+								Context
+							</h2>
+							<div
+								class="disclosure-widget-panel flow"
+								style="--flow-space: 1em"
+							>
 								<p>
 									Relevant when you're dealing with the shadow DOM and
 									<a
@@ -125,7 +126,7 @@
 									<li>inner (shadow)</li>
 								</ol>
 							</div>
-						</details>
+						</div>
 						<div class="connector" style="--grid-area: connector-2">
 							<p>
 								same context? <span class="visually-hidden">then go to</span>
@@ -136,21 +137,18 @@
 						</div>
 					</li>
 					<li class="card flow" style="--grid-area: step-3">
-						<details data-step="3">
-							<summary>
-								<svg width="21" height="15" aria-hidden="true">
-									<use href="#caret" />
-								</svg>
+						<div class="disclosure-widget" data-step="3">
+							<h2>
 								<span class="visually-hidden">Step 3:</span>
-								<h2>The style attribute</h2>
-							</summary>
-							<div>
+								The style attribute
+							</h2>
+							<div class="disclosure-widget-panel">
 								<p>
 									The declarations in a style attribute (inline styles) take
 									precedence over declarations mapped via a style rule.
 								</p>
 							</div>
-						</details>
+						</div>
 						<div class="connector" style="--grid-area: connector-3">
 							<p>
 								no style attribute?
@@ -162,15 +160,12 @@
 						</div>
 					</li>
 					<li class="card flow" style="--grid-area: step-4">
-						<details data-step="4">
-							<summary>
-								<svg width="21" height="15" aria-hidden="true">
-									<use href="#caret" />
-								</svg>
+						<div class="disclosure-widget" data-step="4">
+							<h2>
 								<span class="visually-hidden">Step 4:</span>
-								<h2>Layers</h2>
-							</summary>
-							<div>
+								Layers
+							</h2>
+							<div class="disclosure-widget-panel">
 								<ol>
 									<li>
 										<span class="visually-hidden">important layer A</span>
@@ -194,7 +189,7 @@
 									<li>layer A</li>
 								</ol>
 							</div>
-						</details>
+						</div>
 						<div class="connector" style="--grid-area: connector-4">
 							<p>same layer? <span class="visually-hidden">then go to</span></p>
 							<svg width="16" height="16" aria-hidden="true">
@@ -203,15 +198,12 @@
 						</div>
 					</li>
 					<li class="card flow" style="--grid-area: step-5">
-						<details data-step="5">
-							<summary>
-								<svg width="21" height="15" aria-hidden="true">
-									<use href="#caret" />
-								</svg>
+						<div class="disclosure-widget" data-step="5">
+							<h2>
 								<span class="visually-hidden">Step 5:</span>
-								<h2>Specificity</h2>
-							</summary>
-							<div>
+								Specificity
+							</h2>
+							<div class="disclosure-widget-panel">
 								<ol>
 									<li>ID</li>
 									<li>class, attribute, psuedo-class</li>
@@ -230,7 +222,7 @@
 									</li>
 								</ol>
 							</div>
-						</details>
+						</div>
 						<div class="connector" style="--grid-area: connector-5">
 							<p>
 								same specificity?
@@ -242,21 +234,18 @@
 						</div>
 					</li>
 					<li class="card flow" style="--grid-area: step-6">
-						<details data-step="6">
-							<summary>
-								<svg width="21" height="15" aria-hidden="true">
-									<use href="#caret" />
-								</svg>
+						<div class="disclosure-widget" data-step="6">
+							<h2>
 								<span class="visually-hidden">Step 6:</span>
-								<h2>Scope proximity</h2>
-							</summary>
-							<div>
+								Scope proximity
+							</h2>
+							<div class="disclosure-widget-panel">
 								<p>
 									The style that has the smallest number of hops up the DOM tree
 									hierarchy to the scope root wins.
 								</p>
 							</div>
-						</details>
+						</div>
 						<div class="connector" style="--grid-area: connector-6">
 							<p>
 								same proximity? or no scope?
@@ -268,18 +257,15 @@
 						</div>
 					</li>
 					<li class="card flow" style="--grid-area: step-7">
-						<details data-step="7">
-							<summary>
-								<svg width="21" height="15" aria-hidden="true">
-									<use href="#caret" />
-								</svg>
+						<div class="disclosure-widget" data-step="7">
+							<h2>
 								<span class="visually-hidden">Step 7:</span>
-								<h2>Order of appearance</h2>
-							</summary>
-							<div>
+								Order of appearance
+							</h2>
+							<div class="disclosure-widget-panel">
 								<p>Last declaration in the document order wins.</p>
 							</div>
-						</details>
+						</div>
 					</li>
 				</ol>
 			</main>

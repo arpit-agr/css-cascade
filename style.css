@@ -80,7 +80,8 @@
 	}
 
 	h2 {
-		font-size: var(--step-0);
+		font-size: var(--step-1);
+		text-transform: uppercase;
 	}
 
 	a {
@@ -127,7 +128,7 @@
 	}
 
 	.card {
-		--card-padding: min(6cqi, 0.5lh);
+		--card-padding: min(7cqi, 0.5lh);
 
 		@media (prefers-reduced-motion: no-preference) {
 			opacity: 0;
@@ -139,7 +140,7 @@
 		}
 	}
 
-	details {
+	.disclosure-widget {
 		position: relative;
 		container-type: inline-size;
 		background-color: var(--color-surface-default);
@@ -166,7 +167,7 @@
 			inset-block-start: 0;
 			inset-inline-end: 0;
 			translate: 0% -50%;
-			font-size: var(--step-3);
+			font-size: var(--step-4);
 			-webkit-text-stroke: 0.5em var(--color-surface-default);
 			paint-order: stroke;
 		}
@@ -175,43 +176,21 @@
 			padding: var(--card-padding);
 		}
 
-		summary {
-			--focus-ring-offset: calc(-2 / 3 * var(--card-padding));
-
-			display: flex;
-			align-items: first baseline;
-			gap: 0.5ch;
+		h2 {
+			position: relative;
+			z-index: 1;
 			border-style: solid;
 			border-width: 0px 0px calc(var(--border-thickness) + 2px) 0px;
-			transition: background-color var(--transition-slow);
-
-			&::marker {
-				content: "";
-			}
-
-			svg {
-				--icon-size: min(5cqi, 1ex);
-
-				rotate: -90deg;
-				translate: 0 -0.125ex;
-				transition: rotate var(--transition-slow);
-
-				path {
-					stroke: var(--color-fill);
-				}
-			}
-		}
-
-		&[open] summary {
 			border-image: var(--separator-image-source) 0 3 5 3 stretch stretch;
-
-			svg {
-				rotate: 0deg;
-			}
 		}
 
-		summary + * {
+		.disclosure-widget-panel {
 			font-family: var(--font-mono);
+
+			li + li {
+				border-block-start: calc(var(--border-thickness) - 2px) dashed
+					oklch(from var(--color-surface-default) calc(l - 0.25) c h);
+			}
 		}
 
 		ol {
@@ -219,19 +198,9 @@
 		}
 	}
 
-	@media (hover: hover) {
-		details:not([open]):has(summary:hover, summary:focus-visible),
-		details[open] summary:hover {
-			background-color: oklch(
-				from var(--color-surface-default) calc(l - 0.05) c h
-			);
-		}
-	}
-
 	.connector {
 		position: relative;
 		max-inline-size: fit-content;
-		margin-inline-start: var(--card-padding);
 
 		svg {
 			--icon-size: 1lh;
@@ -247,7 +216,6 @@
 		}
 
 		p {
-			font-size: var(--step--1);
 			text-box: trim-both cap alphabetic;
 		}
 	}
@@ -275,6 +243,10 @@
 	@media (width >= 80rem) and (orientation: landscape) {
 		:root {
 			--wrapper-max-width: 104rem;
+
+			/* update the last media query if you change this value */
+			--wrapper-padding-inline: 2.5vmax;
+			--region-space: 2.5vmax;
 		}
 
 		body {
@@ -288,7 +260,7 @@
 			grid-template-columns: repeat(7, 1fr);
 			grid-template-rows: repeat(9, 1fr);
 			column-gap: 1em;
-			min-block-size: clamp(51rem, 100svh, 60rem);
+			min-block-size: clamp(50rem, 100svh, 60rem);
 
 			> *:not(header) {
 				--flow-space: 0;
@@ -329,6 +301,7 @@
 			display: grid;
 			grid-template-columns: subgrid;
 			grid-template-rows: subgrid;
+			grid-auto-rows: 1fr;
 		}
 
 		.diagram {
@@ -354,12 +327,12 @@
 			grid-template-rows: subgrid;
 		}
 
-		details {
+		.disclosure-widget {
 			grid-row: span 3;
 			z-index: 1;
 
 			@supports (rotate: random(-2deg, 2deg)) {
-				rotate: random(-4deg, 4deg);
+				rotate: random(-2deg, 2deg);
 				transition:
 					background-color var(--transition-slow),
 					rotate var(--transition-slow) var(--ease-3);
@@ -369,34 +342,20 @@
 				}
 			}
 
-			summary + * {
-				position: relative;
-				font-size: calc(var(--step--2) + 0.75cqi);
-				z-index: 1;
+			&::after {
+				font-size: var(--step-3);
+			}
+
+			.disclosure-widget-panel {
+				font-size: calc(var(--step--2) + 0.55cqi);
 
 				@supports not (text-box: trim-both cap alphabetic) {
 					font-size: calc(var(--step--2) + 0.33cqi);
 				}
 			}
 
-			li + li {
-				border-block-start: calc(var(--border-thickness) - 2px) dashed
-					oklch(from var(--color-surface-default) calc(l - 0.125) c h);
-			}
-		}
-
-		summary {
-			border-color: #0000;
-
 			h2 {
-				font-size: calc(var(--step--1) + 2cqi);
-				z-index: 1;
-			}
-
-			&::after {
-				content: "";
-				position: absolute;
-				inset: 0;
+				font-size: var(--step-0);
 			}
 		}
 
@@ -434,7 +393,7 @@
 			p {
 				--measure: 13.75ch;
 				text-box: unset;
-
+				text-wrap-style: balance;
 				background-color: var(--color-surface-default);
 				font-size: calc(var(--step--3) + 2cqi);
 				text-align: center;
@@ -444,7 +403,7 @@
 		}
 	}
 
-	@media (width >= calc(104rem + 4rem)) and (height >= 60rem) {
+	@media (width >= calc(104rem + 5vmax)) and (height >= 60rem) {
 		.page-inner {
 			border-style: solid;
 			border-width: calc(var(--border-thickness) + 2px);
