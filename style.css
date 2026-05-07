@@ -144,9 +144,17 @@
 		position: relative;
 		container-type: inline-size;
 		background-color: var(--color-surface-default);
-		box-shadow: var(--shadow-4);
+		box-shadow:
+			inset 0px 0px calc(0.5 * var(--card-padding)) 0px #888,
+			var(--shadow-4);
 
 		transition: background-color var(--transition-slow);
+
+		@media (hover: hover) {
+			&:has(button:hover) {
+				background-color: oklch(from var(--color-surface-default) calc(l - 0.04) c h);
+			}
+		}
 
 		&::before,
 		&::after {
@@ -177,14 +185,51 @@
 		}
 
 		h2 {
-			position: relative;
-			z-index: 1;
 			border-style: solid;
 			border-width: 0px 0px calc(var(--border-thickness) + 2px) 0px;
 			border-image: var(--separator-image-source) 0 3 5 3 stretch stretch;
+
+			button {
+				--btn-padding-block: 0;
+				--btn-padding-inline: 0;
+				--btn-radius: 0px;
+				--btn-shadow: none;
+				--btn-color-bg: #0000;
+
+				inline-size: 100%;
+				display: flex;
+				gap: 0.75ch;
+				align-items: first baseline;
+				text-align: start;
+				text-transform: uppercase;
+
+				&::after {
+					content: "";
+					position: absolute;
+					inset: 0;
+				}
+
+				span {
+					text-box: trim-both cap alphabetic;
+				}
+
+				svg {
+					block-size: 0.5lh;
+					inline-size: 0.5lh;
+					order: -1;
+					rotate: -90deg;
+					transition: rotate var(--transition-slow);
+
+					[aria-expanded="true"] & {
+						rotate: 0deg;
+					}
+				}
+			}
 		}
 
 		.disclosure-widget-panel {
+			position: relative;
+			z-index: 1;
 			font-family: var(--font-mono);
 
 			li + li {
@@ -347,7 +392,7 @@
 			}
 
 			.disclosure-widget-panel {
-				font-size: calc(var(--step--2) + 0.55cqi);
+				font-size: calc(var(--step--2) + 0.6cqi);
 
 				@supports not (text-box: trim-both cap alphabetic) {
 					font-size: calc(var(--step--2) + 0.33cqi);
@@ -355,7 +400,7 @@
 			}
 
 			h2 {
-				font-size: var(--step-0);
+				font-size: calc(var(--step--2) + 3cqi);
 			}
 		}
 
@@ -513,26 +558,34 @@
 		-webkit-box-decoration-break: clone;
 	}
 
-	/* Details & Summary */
-	@supports selector(::details-content) {
-		details::details-content {
-			block-size: 0;
-			opacity: 0;
-			overflow-y: clip;
+	/* Button styles*/
+	button {
+		cursor: pointer;
+		touch-action: manipulation;
+		-webkit-tap-highlight-color: transparent;
+		font: inherit;
+		color: inherit;
+		letter-spacing: inherit;
+		word-spacing: inherit;
 
-			@media (prefers-reduced-motion: no-preference) {
-				transition:
-					content-visibility var(--transition-slow, 200ms) allow-discrete,
-					margin-block-start var(--transition-slow, 200ms),
-					block-size var(--transition-slow, 200ms),
-					opacity var(--transition-slow, 200ms);
-			}
+		padding-block: 0.125em;
+		padding-inline: 0.5em;
+
+		@supports (text-box: trim-both cap alphabetic) {
+			text-box: trim-both cap alphabetic;
+			padding-block: var(--btn-padding-block, 0.5em);
+			padding-inline: var(--btn-padding-inline, 0.5em);
 		}
 
-		details[open]::details-content {
-			block-size: auto;
-			opacity: 1;
-		}
+		border: var(--btn-border-width, 1px) var(--btn-border-style, solid)
+			var(--btn-border-color, #0000);
+		border-radius: var(--btn-radius, 0.25rem);
+		background: var(--btn-color-bg, ButtonFace);
+		color: var(--btn-color-text, ButtonText);
+		box-shadow: var(
+			--btn-shadow,
+			0 var(--border-width-medium, 1px) 0 var(--text-color, canvasText)
+		);
 	}
 
 	/* Interaction (Focus, Selection & Target) */
