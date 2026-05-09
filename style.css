@@ -148,11 +148,13 @@
 			inset 0px 0px calc(0.5 * var(--card-padding)) 0px #888,
 			var(--shadow-4);
 
-		transition: background-color var(--transition-slow);
+		transition: box-shadow var(--transition-slow);
 
 		@media (hover: hover) {
 			&:has(button:hover) {
-				background-color: oklch(from var(--color-surface-default) calc(l - 0.04) c h);
+				box-shadow:
+					inset 0px 0px calc(1 * var(--card-padding)) 0px #888,
+					var(--shadow-4);
 			}
 		}
 
@@ -185,10 +187,6 @@
 		}
 
 		h2 {
-			border-style: solid;
-			border-width: 0px 0px calc(var(--border-thickness) + 2px) 0px;
-			border-image: var(--separator-image-source) 0 3 5 3 stretch stretch;
-
 			button {
 				--btn-padding-block: 0;
 				--btn-padding-inline: 0;
@@ -230,6 +228,11 @@
 		.disclosure-widget-panel {
 			position: relative;
 			z-index: 1;
+
+			border-style: solid;
+			border-width: calc(var(--border-thickness) + 2px) 0px 0px 0px;
+			border-color: #0000;
+			border-image: var(--separator-image-source) 5 3 0 3 stretch stretch;
 			font-family: var(--font-mono);
 
 			li + li {
@@ -378,17 +381,14 @@
 
 			@supports (rotate: random(-2deg, 2deg)) {
 				rotate: random(-2deg, 2deg);
-				transition:
-					background-color var(--transition-slow),
-					rotate var(--transition-slow) var(--ease-3);
-
-				&:hover {
-					rotate: 0deg;
-				}
 			}
 
 			&::after {
 				font-size: var(--step-3);
+			}
+
+			h2 {
+				font-size: calc(var(--step--2) + 3cqi);
 			}
 
 			.disclosure-widget-panel {
@@ -397,10 +397,23 @@
 				@supports not (text-box: trim-both cap alphabetic) {
 					font-size: calc(var(--step--2) + 0.33cqi);
 				}
-			}
 
-			h2 {
-				font-size: calc(var(--step--2) + 3cqi);
+				transition:
+					opacity var(--transition-slow),
+					display var(--transition-slow) allow-discrete;
+
+				/* on exit*/
+				&[hidden] {
+					opacity: 0;
+				}
+
+				/* on stage */
+				opacity: 1;
+
+				/* before entry */
+				@starting-style {
+					opacity: 0;
+				}
 			}
 		}
 
@@ -594,11 +607,6 @@
 		outline-style: var(--focus-ring-style, auto);
 		outline-color: var(--focus-ring-color, currentColor);
 		outline-offset: var(--focus-ring-offset, 4px);
-	}
-
-	/* Accessibility / Utilities */
-	[hidden] {
-		display: none !important;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
